@@ -11,7 +11,9 @@ def signup_view(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return render(request, 'login.html')
+            login(request, user)  # 새로 가입한 사용자를 로그인 처리
+
+            return render(request, 'main.html')
         
     else:
         form = SignUpForm()
@@ -25,7 +27,7 @@ def login_view(request):
         
         if user is not None:
             auth.login(request, user)
-            return redirect('user:main')
+            return render(request, 'main.html')
         else:
             return render(request, 'login.html')
     else:
