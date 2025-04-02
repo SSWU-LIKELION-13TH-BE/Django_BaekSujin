@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+</head>
+<body>
+    <h2>로그인</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <h3>아이디</h3>
+            <input type="text" name="username" required> <br>
+            <h3>비밀번호</h3>
+            <input type="password" name="password" required> <br><br>
+            <input type="submit" value="로그인"> 
+        </form> <br><br>
+        <a href="{% url 'user:signup' %}"><button>회원가입</button></a>
+        <a href="{% url 'user:findPW' %}"><button>비밀번호 찾기</button></a>
+        <h3>로그아웃 후 이 페이지로 왔다면 성공</h3>
+        <h3>회원가입 후 이 페이지로 왔다면 성공</h3>
+
+    </body>
+</html>
