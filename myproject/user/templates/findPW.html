@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>비밀번호 찾기</title>
+</head>
+<body>
+    <h1>비밀번호 변경</h1>
+    <form method="POST" action="{% url 'user:findPW' %}">
+        {% csrf_token %}
+        <p>아이디를 입력하세요.</p>
+        <input type="text" name="username" required> <br>
+        <p>변경할 비밀번호를 입력하세요.</p>
+        <input type="password" name="newPW" required> <br>
+        <p>다시 한 번 비밀번호를 입력하세요.</p>
+        <input type="password" name="newPW2" required> <br><br>
+        <input type="submit" value="입력 완료">
+    </form>
+</body>
+</html>

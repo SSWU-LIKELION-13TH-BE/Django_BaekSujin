@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+</head>
+<body>
+    {% csrf_token %} 
+
+    {% if user.is_authenticated %}
+    <div>
+        <h1>로그인 후 메인으로 왔다면 성공</h1>
+        <a href="{% url 'user:logout' %}"><button>로그아웃</button></a>
+    </div>
+
+    {% else %}
+    <h1>로그인 안 된 메인 페이지</h1>
+    <div>
+        <a href="{% url 'user:login' %}"><button>로그인</button></a>
+        <a href="{% url 'user:signup' %}"><button>회원가입</button></a>
+    </div>
+    {% endif %}
+</body>
+</html>
