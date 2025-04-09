@@ -10,7 +10,8 @@
     {% if user.is_authenticated %}
     <div>
         <h1>로그인 후 메인으로 왔다면 성공</h1>
-        <a href="{% url 'user:logout' %}"><button>로그아웃</button></a>
+        <a href="{% url 'user:logout' %}"><button>로그아웃</button></a> <br><br>
+        <a href="{% url 'post:write' %}"><button>글 작성</button></a>
     </div>
 
     {% else %}

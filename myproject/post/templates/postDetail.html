@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세 보기</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+
+    <!-- 게시글 정보 출력 -->
+    <p>작성자: {{ post.writer.username }}</p>
+    <p>내용: {{ post.content }}</p>
+    <p>링크: <a href="{{ post.link }}">{{ post.link }}</a></p>
+    {% if post.image %}
+        <img src="{{ post.image.url }}" alt="게시글 이미지" style="width: 200px;height:200px;">
+    {% endif %}
+
+    <!-- 게시글 좋아요 버튼 -->
+    <form action="{% url 'post:post_like' post.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">
+            👍 {{ post.likes.count }}
+        </button>
+    </form>
+
+    <hr>
+
+    <!-- 댓글 목록 -->
+    <h3>댓글</h3>
+    {% for comment in comments %}
+        <div style="margin-bottom: 15px;">
+            <p><strong>{{ comment.writer.username }}</strong> ({{ comment.created_at|date:"Y-m-d H:i" }})</p>
+            <p>{{ comment.content }}</p>
+
+            <!-- 댓글 좋아요 버튼 -->
+            <form action="{% url 'post:comment_like' post.id comment.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">
+                    👍 {{ comment.likes.count }}
+                </button>
+            </form>
+
+            <!-- 대댓글 목록 -->
+            {% for recomment in comment.recomment_set.all %}
+                <div style="margin-left: 30px; margin-top: 5px;">
+                    <p><strong>{{ recomment.writer.username }}</strong> ({{ recomment.created_at|date:"Y-m-d H:i" }})</p>
+                    <p>{{ recomment.recomment }}</p>
+
+                    <!-- 대댓글 좋아요 버튼 -->
+                    <form action="{% url 'post:recomment_like' post.id recomment.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">
+                            👍 {{ recomment.likes.count }}
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+
+            <!-- 대댓글 작성 폼 -->
+            <form action="{% url 'post:recomment' post.id %}" method="post">
+                {% csrf_token %}
+                {{ recomment_form.as_p }}
+                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                <button type="submit">대댓글 작성</button>
+            </form>
+        </div>
+    {% endfor %}
+
+    <!-- 댓글 작성 폼 -->
+    <hr>
+    <h3>댓글 작성</h3>
+    <form action="{% url 'post:comment' post.id %}" method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">댓글 작성</button>
+    </form>
+</body>
+</html>
