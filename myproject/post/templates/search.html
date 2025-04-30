@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>검색 결과</title>
+</head>
+<body>
+    {% if not posts %}
+        <h1>검색 결과가 없습니다.</h1>
+    {% else %}
+    <h1>검색 결과</h1>
+        {% for post in posts %}
+        <div class="posts">
+            {{post.title}}
+            <br>
+        </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>

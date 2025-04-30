@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PostForm, CommentForm, ReCommentForm
 from .models import Post, Comment, ReComment, PostLike, CommentLike, ReCommentLike
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 def post_view(request):
     if request.method == "POST":
@@ -75,3 +76,14 @@ def recomment_like(request, post_id, recomment_id):
     if not created:
         like.delete()
     return redirect('post:detail', post_id=post_id)
+
+def search_view(request):
+    posts = Post.objects.all().order_by('-id')
+    
+    q = request.POST.get('q', "")
+    
+    if q:
+        posts = posts.filter(title__icontains=q)
+        return render(request, 'search.html', {'posts':posts, 'q':q})
+    else:
+        return render(request, 'postDetail.html')
