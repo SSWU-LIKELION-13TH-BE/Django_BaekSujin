@@ -17,6 +17,7 @@
 
     <!-- 게시글 정보 출력 -->
     <p>작성자: {{ post.writer.username }}</p>
+    <p>조회수: {{ post.views }}회</p>
     <p>내용: {{ post.content }}</p>
     <p>링크: <a href="{{ post.link }}">{{ post.link }}</a></p>
     <p>사용 스택: {{ post.stack }}</p>

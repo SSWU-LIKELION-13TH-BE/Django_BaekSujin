@@ -8,13 +8,25 @@
     {% if not posts %}
         <h1>검색 결과가 없습니다.</h1>
     {% else %}
-    <h1>검색 결과</h1>
-        {% for post in posts %}
-        <div class="posts">
-            {{post.title}}
-            <br>
-        </div>
-        {% endfor %}
+        <h1>검색 결과</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>좋아요</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.like_count }}개</td>
+                    <td>{{ post.views }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% endif %}
 </body>
 </html>

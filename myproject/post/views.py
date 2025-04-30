@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PostForm, CommentForm, ReCommentForm
 from .models import Post, Comment, ReComment, PostLike, CommentLike, ReCommentLike
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Count
 
 def post_view(request):
     if request.method == "POST":
@@ -28,6 +28,10 @@ def detail_view(request, post_id):
         'comment_form': comment_form,
         'recomment_form': recomment_form,
     }
+    
+    post.views += 1
+    post.save(update_fields=['views'])
+    
     return render(request, 'postDetail.html', context)
 
 @login_required
@@ -77,10 +81,25 @@ def recomment_like(request, post_id, recomment_id):
         like.delete()
     return redirect('post:detail', post_id=post_id)
 
-def search_view(request):
-    posts = Post.objects.all().order_by('-id')
+# def search_view(request):
+#     posts = Post.objects.all().order_by('-id')
     
+#     q = request.POST.get('q', "")
+    
+#     if q:
+#         posts = posts.filter(title__icontains=q)
+#         return render(request, 'search.html', {'posts':posts, 'q':q})
+#     else:
+#         return render(request, 'postDetail.html')
+    
+def search_view(request):
     q = request.POST.get('q', "")
+    # input name = 'p', 값이 없으면 기본값 빈 문자열!
+
+    posts = Post.objects.filter(title__icontains=q).annotate(like_count=Count('likes')).order_by('-like_count', '-id')
+    # Post 필드에 title에 q가 포함된 것, icontains:대문자 구분X
+    # annotate : like_count라는 필드에 값 넣음 (Count 값 계산)
+    # 정렬 1순위: 인기순, 2순위: 최신순
     
     if q:
         posts = posts.filter(title__icontains=q)
