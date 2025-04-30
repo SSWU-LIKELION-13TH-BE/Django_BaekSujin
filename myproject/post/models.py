@@ -14,6 +14,9 @@ class Post(models.Model):
     image = models.ImageField(upload_to="postImage/", blank=True, null=True)
     link = models.URLField(null=False)
     stack = models.CharField(max_length=10, choices=CATEGORIES)
+    
+    # 조회수
+    views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.writer.username
