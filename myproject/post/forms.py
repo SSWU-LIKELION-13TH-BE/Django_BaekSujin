@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comment, ReComment
+from .models import Post, Comment, ReComment, Search
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -17,3 +17,8 @@ class ReCommentForm(forms.ModelForm):
     class Meta:
         model = ReComment
         fields = ['recomment']
+        
+class SearchForm(forms.ModelForm):
+    class Meta:
+        model = Search
+        fields = ['title']

@@ -1,8 +1,5 @@
 from django.urls import path
-from .views import (
-    post_view, detail_view, comment_view, recomment_view,
-    post_like, comment_like, recomment_like
-)
+from .views import post_view, detail_view, comment_view, recomment_view, post_like, comment_like, recomment_like, search_view
 
 app_name = "post"
 
@@ -16,4 +13,7 @@ urlpatterns = [
     path('detail/<int:post_id>/like/', post_like, name='post_like'),
     path('detail/<int:post_id>/comment/<int:comment_id>/like/', comment_like, name='comment_like'),
     path('detail/<int:post_id>/recomment/<int:recomment_id>/like/', recomment_like, name='recomment_like'),
+    
+    # 검색
+    path('search/', search_view, name='search')
 ]

@@ -5,12 +5,21 @@
     <title>게시글 상세 보기</title>
 </head>
 <body>
+    <form action="{% url 'post:search' %}" method="post">
+        {% csrf_token %}
+        <input type="search" placeholder="Search" name="q" value="{{q}}">
+        <button type="submit">검색</button>
+    </form>
+    
+    <hr><br>
+
     <h1>{{ post.title }}</h1>
 
     <!-- 게시글 정보 출력 -->
     <p>작성자: {{ post.writer.username }}</p>
     <p>내용: {{ post.content }}</p>
     <p>링크: <a href="{{ post.link }}">{{ post.link }}</a></p>
+    <p>사용 스택: {{ post.stack }}</p>
     {% if post.image %}
         <img src="{{ post.image.url }}" alt="게시글 이미지" style="width: 200px;height:200px;">
     {% endif %}

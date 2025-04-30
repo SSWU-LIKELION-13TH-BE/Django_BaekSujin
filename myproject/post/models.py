@@ -45,3 +45,6 @@ class CommentLike(models.Model):
 class ReCommentLike(models.Model):
     recomment = models.ForeignKey(ReComment, on_delete=models.CASCADE, related_name="likes")
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+class Search(models.Model):
+    title = models.CharField(max_length=30)
