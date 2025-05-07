@@ -35,6 +35,33 @@ def detail_view(request, post_id):
     
     return render(request, 'postDetail.html', context)
 
+def update_view(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('post:detail', post_id=post.id)
+        else:
+            return render(request, 'postDetail.html', {'form': form})
+    else:
+        # GET일 땐 POST 요청들 넘겨주면 X
+        form = PostForm(instance=post)
+        return render(request, 'postUpdate.html', {'form': form})
+
+
+        
+        
+
+def delete_view(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+
+    if request.method == 'POST':
+        post.delete()
+        return redirect('mypage:profile')
+    return render(request, 'mypage.html')
+
 @login_required
 def comment_view(request, post_id):
     article = get_object_or_404(Post, pk=post_id)

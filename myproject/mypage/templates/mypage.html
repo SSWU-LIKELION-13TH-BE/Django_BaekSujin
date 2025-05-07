@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이 페이지</title>
+</head>
+<body>
+    <p>{{user}}님</p> <br>
+    <a href=""><button>회원정보 수정</button></a>
+
+    <!-- 사용자 작성 글 목록 -->
+    <h2>작성한 글 목록</h2>
+    {% for post in posts %}
+        <div>
+            <a href="{% url 'post:delete' post.id %}"><button>글 삭제</button></a>
+        </div>          
+    {% endfor %}
+</body>
+</html>
