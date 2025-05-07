@@ -50,10 +50,6 @@ def update_view(request, post_id):
         form = PostForm(instance=post)
         return render(request, 'postUpdate.html', {'form': form})
 
-
-        
-        
-
 def delete_view(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
 

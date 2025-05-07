@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>프로필 수정</title>
+</head>
+<body>
+    <h2>프로필 수정</h2>
+    <form method="post">
+        {% csrf_token %}
+        <h3>회원정보 수정</h3>
+        {{ upform.as_p }}  <br>
+
+        <h3>비밀번호 수정</h3>
+        {{ pwform.as_p}} <br>
+        <button type="submit">수정 완료</button>
+    </form>
+</body>
+</html>
