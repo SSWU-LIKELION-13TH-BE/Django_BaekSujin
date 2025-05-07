@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
-from django.contrib.auth import authenticate, login
-from .forms import SignUpForm
+from django.contrib.auth import authenticate, login, update_session_auth_hash
+from .forms import SignUpForm, UserUpdateForm
 from .models import CustomUser
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required
+
+
 
 # Create your views here.
 
@@ -67,3 +71,21 @@ def findPW_view(request):
             return render(request, 'findPW.html', {"error": "존재하지 않는 아이디입니다."})
         
     return render(request, 'findPW.html')
+
+@login_required
+def update_view(request):
+    if request.method == 'POST':
+        upform = UserUpdateForm(request.POST, instance=request.user)
+        # 현재 접속한 사용자로 접근하면 돼서 user.id 필요 X
+        pwform = PasswordChangeForm(user=request.user, data=request.POST)
+        
+        if upform.is_valid() and pwform.is_valid():
+            upform.save()
+            user = pwform.save()
+            update_session_auth_hash(request, user)  # ✅ 비밀번호 바꿔도 로그인 유지
+            return redirect('user:main')        
+    else:
+        print('else')
+        upform = UserUpdateForm(instance=request.user)
+        pwform = PasswordChangeForm(user=request.user)
+    return render(request, 'update.html', {'upform':upform, 'pwform':pwform})

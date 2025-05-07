@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     
     'user',
     'post',
+    'mypage',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +132,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = "image/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "image")
 # 실제로 파일이 저장되는 경로를 설정하는 값.
+
+
+LOGIN_REDIRECT_URL = '/user/'  # 로그인 성공 시 이동할 경로
+LOGOUT_REDIRECT_URL = '/user/login/'
