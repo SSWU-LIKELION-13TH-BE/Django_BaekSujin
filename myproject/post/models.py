@@ -8,6 +8,7 @@ CATEGORIES = (
 )
 
 class Post(models.Model):
+    views = models.IntegerField(default=0)
     writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=30)
     content = models.TextField()

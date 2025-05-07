@@ -4,8 +4,8 @@ from .models import Post, Comment, ReComment, Search
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'image', 'link', 'stack']
-
+        # fields = ['title', 'content', 'image', 'link', 'stack']
+        exclude = ['writer', 'views']
 
 class CommentForm(forms.ModelForm):
     class Meta:

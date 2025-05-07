@@ -10,6 +10,7 @@ def post_view(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.writer = request.user
+            post.views = 0
             post.save()
             return redirect('post:detail', post_id=post.id)
         else:
