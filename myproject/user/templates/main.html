@@ -5,16 +5,26 @@
     <title>메인</title>
 </head>
 <body>
-    {% csrf_token %} 
+    {% csrf_token %}
 
     {% if user.is_authenticated %}
     <div>
-        <h1>로그인 후 메인으로 왔다면 성공</h1>
+        <h1>메인</h1>
         <a href="{% url 'user:logout' %}"><button>로그아웃</button></a> <br><br>
-        <a href="{% url 'post:write' %}"><button>글 작성</button></a>
+        <a href="{% url 'post:write' %}"><button>글 작성</button></a> <br><br>
+        <a href="{% url 'mypage:go_mypage' %}"><button>마이 페이지</button></a>
     </div>
+    <br><br>
 
-
+    <h3>[ 마이페이지 목록 ]</h3>
+    {% if profiles %}
+        {% for profile in profiles %}
+            <a href="{% url 'mypage:visit' profile.user.id %}">{{ profile.user.username }}의 페이지</a> <br><br>
+        {% endfor %}
+    {% else %}
+        <p>사용자가 없습니다!</p>
+    {% endif %}
+    
     {% else %}
     <h1>로그인 안 된 메인 페이지</h1>
     <div>

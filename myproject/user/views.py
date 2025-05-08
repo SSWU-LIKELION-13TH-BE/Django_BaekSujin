@@ -3,6 +3,7 @@ from django.contrib import auth
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from .forms import SignUpForm, UserUpdateForm
 from .models import CustomUser
+from mypage.models import Profile
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 
@@ -15,6 +16,7 @@ def signup_view(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
+            Profile.objects.create(user=user)
             login(request, user)  # 새로 가입한 사용자를 로그인 처리
 
             return render(request, 'main.html')
@@ -42,7 +44,8 @@ def logout_view(request):
     return redirect('user:login')
 
 def main_view(request):
-    return render(request, 'main.html')
+    profiles = Profile.objects.all() # Profile 모델을 통해 모든 프로필을 가져옵니다.
+    return render(request, 'main.html', {'profiles': profiles})
 
 def findPW_view(request):    
     if request.method == 'POST':
@@ -89,3 +92,8 @@ def update_view(request):
         upform = UserUpdateForm(instance=request.user)
         pwform = PasswordChangeForm(user=request.user)
     return render(request, 'update.html', {'upform':upform, 'pwform':pwform})
+
+@login_required
+def toMypage_view(request):
+    profiles = Profile.objects.exclude(user=request.user)  # 자기 자신 제외
+    return render(request, 'main.html', {'profiles': profiles})

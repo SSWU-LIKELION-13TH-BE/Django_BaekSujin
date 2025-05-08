@@ -1,23 +1,18 @@
-<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>마이 페이지</title>
+    <title>{{ profile_owner.username }}님의 페이지</title>
 </head>
 <body>
-    <p>{{user}}님</p> <br>
-    <a href="{% url 'user:update' %}"><button>회원정보 수정</button></a>
-    <a href="{% url 'user:main' %}"><button>메인으로</button></a>
+    <h1>{{ profile_owner.username }}님의 마이 페이지</h1>
 
-
-    <!-- 사용자 작성 글 목록 -->
     <h2>작성한 글 목록</h2>
     {% for post in posts %}
         <div>
             <a href="{% url 'post:detail' post.id %}">{{post.title}}</a>
         </div>          
     {% endfor %}
-    <br><br>
+
     <h2>방명록</h2>
     {% for visit in visits %}
         <div>
@@ -25,5 +20,12 @@
             <p>{{ visit.content }}</p>
         </div>
     {% endfor %}
+
+    <h3>방명록 남기기</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ visit_form.as_p }}
+        <button type="submit">완료!</button>
+    </form>
 </body>
 </html>

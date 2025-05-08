@@ -1,6 +1,5 @@
 from django.urls import path
 from .views import post_view, detail_view, comment_view, recomment_view, post_like, comment_like, recomment_like, search_view, delete_view, update_view
-from user.views import update_view
 
 app_name = "post"
 

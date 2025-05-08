@@ -42,7 +42,7 @@ def update_view(request, post_id):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            return redirect('post:detail', post_id=post.id)
+            return redirect('post:detail', post_id=post_id)
         else:
             return render(request, 'postDetail.html', {'form': form})
     else:
@@ -50,13 +50,17 @@ def update_view(request, post_id):
         form = PostForm(instance=post)
         return render(request, 'postUpdate.html', {'form': form})
 
+@login_required
 def delete_view(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
 
     if request.method == 'POST':
         post.delete()
-        return redirect('mypage:profile')
-    return render(request, 'mypage.html')
+        # 삭제 후 마이페이지로 리다이렉트
+        return redirect('mypage:go_mypage')  # 마이페이지로 리다이렉트
+
+    # GET 요청일 경우 삭제 폼을 반환 (또는 아무것도 하지 않음)
+    return redirect('mypage:go_mypage')
 
 @login_required
 def comment_view(request, post_id):
