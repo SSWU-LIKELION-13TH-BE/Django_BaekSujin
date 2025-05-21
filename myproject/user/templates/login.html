@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>로그인</title>
 </head>
+{% load socialaccount %}
 <body>
     <h2>로그인</h2>
         <form method="POST">
@@ -19,5 +20,13 @@
         <h3>로그아웃 후 이 페이지로 왔다면 성공</h3>
         <h3>회원가입 후 이 페이지로 왔다면 성공</h3>
 
+        <h3>소셜 로그인</h3>
+        {% for provider in social_providers %}
+            <a href="{% provider_login_url provider.provider %}">{{ provider.name }} 로그인</a><br>
+        {% endfor %}
+
+        {% for provider in social_providers %}
+            <p>{{ provider.provider }}</p>  <!-- 제공자 이름 출력 -->
+        {% endfor %}
     </body>
 </html>
