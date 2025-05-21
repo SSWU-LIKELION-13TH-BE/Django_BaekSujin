@@ -40,10 +40,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     
     'user',
     'post',
     'mypage',
+    
+    #allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    
+    #provider 추가
+    'allauth.socialaccount.providers.naver',
+    'allauth.socialaccount.providers.kakao'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -132,6 +144,50 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = "image/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "image")
 # 실제로 파일이 저장되는 경로를 설정하는 값.
+
+AUTHENTICATION_BACKENDS = (
+    #추가 장고에서 사용자의 이름을 기준으로 로그인하도록 설정
+    'django.contrib.auth.backends.ModelBackend',
+
+    # 추가 'allauth'의 인증방식 추가
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+    'naver': {
+        'APP': {
+            'client_id': 'Jv4Wh2RIa2zE1hnBmP2i',  # 네이버 개발자 센터에서 발급받은 client_id
+            'secret': 'Sk830tXd7W',  # 네이버 개발자 센터에서 발급받은 client_secret
+        },
+        'SCOPE': [
+            'name',    # 사용자의 이름
+            'email',   # 사용자의 이메일
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',  # 로그인 시 항상 'online' 상태로
+            'prompt': 'select_account',  # 계정 선택을 위한 팝업을 강제
+        }
+    },
+    
+    "kakao": {
+        "APP": {
+            "client_id": "157a910f7c1b7a2d85320bdd1af6b961",
+            "secret": "d72e04d7012873270d4ede2a72d7fc2e",
+            "key": ""
+        },
+        "SCOPE": [
+            "profile_nickname",
+            "profile_image"
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+            "prompt": "select_account"
+        }
+    }
+}
+
+SITE_ID = 3
 
 
 LOGIN_REDIRECT_URL = '/user/'  # 로그인 성공 시 이동할 경로
